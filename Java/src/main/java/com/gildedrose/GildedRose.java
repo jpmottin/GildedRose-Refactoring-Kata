@@ -1,10 +1,19 @@
 package com.gildedrose;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 class GildedRose {
     Item[] items;
+    public static final String NPE_EXCEPTION_MESSAGE = "Null items are not allowed";
 
     public GildedRose(Item[] items) {
-        this.items = items;
+
+        this.items = Arrays
+                .stream(items)
+                .peek(p -> { if (p == null) throw new IllegalArgumentException(NPE_EXCEPTION_MESSAGE); })
+                .map(Item::clone)
+                .toArray(Item[]::new);
     }
 
     public void updateQuality() {
@@ -13,7 +22,11 @@ class GildedRose {
                     && !items[i].name.equals("Backstage passes to a TAFKAL80ETC concert")) {
                 if (items[i].quality > 0) {
                     if (!items[i].name.equals("Sulfuras, Hand of Ragnaros")) {
-                        items[i].quality = items[i].quality - 1;
+                        if(items[i].name.equals("Conjured Mana Cake")){
+                            items[i].quality -= 2;
+                            if(items[i].quality < 0) items[i].quality = 0;
+                        } else
+                            items[i].quality = items[i].quality - 1;
                     }
                 }
             } else {

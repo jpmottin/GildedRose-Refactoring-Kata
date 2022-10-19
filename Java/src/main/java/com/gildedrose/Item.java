@@ -1,6 +1,6 @@
 package com.gildedrose;
 
-public class Item {
+public class Item implements Cloneable {
 
     public String name;
 
@@ -14,8 +14,17 @@ public class Item {
         this.quality = quality;
     }
 
-   @Override
-   public String toString() {
+    public EType getType() {
+        return EType.fromString(name);
+    }
+
+    @Override
+    protected Item clone() {
+        return new Item(name,sellIn,quality);
+    }
+
+    @Override
+    public String toString() {
         return this.name + ", " + this.sellIn + ", " + this.quality;
     }
 }
